@@ -55,6 +55,13 @@ public class CharControllerMotor : NetworkBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        Rigidbody rb = new Rigidbody();
+        rb.AddForce(0,0,500*Time.deltaTime);
+        rb.AddForce(500 * Time.deltaTime, 0, 0);
+    }
+
     private void Update()
     {
         if (isLocalPlayer)
@@ -63,6 +70,7 @@ public class CharControllerMotor : NetworkBehaviour
             {
                 Application.Quit();
             }
+            
             HandleMovement();
             HandleCameraRotation();
             
@@ -136,8 +144,8 @@ public class CharControllerMotor : NetworkBehaviour
         //Rotation phase
         //Rotate the model so the QRCodeToAlignWith has the same rotation as QRCodeToAlignTo  
         Transform modelToAlignTransform = modelToAlignLogic.transform;
-        var rotationVar = qrCodeToAlignToTransform.rotation * Quaternion.Inverse(qrCodeToAlignWithTransform.rotation); //The rotation we want to achieve times the inverse of our current rotation
-        modelToAlignTransform.rotation = rotationVar * modelToAlignTransform.rotation; //simply rotate the parent to our desired rotation
+        var rotationDif = qrCodeToAlignToTransform.rotation * Quaternion.Inverse(qrCodeToAlignWithTransform.rotation); //The rotation we want to achieve times the inverse of our current rotation = Difference
+        modelToAlignTransform.rotation = rotationDif * modelToAlignTransform.rotation; //simply rotate the parent to our desired rotation
 
         //Position phase
         //A vector contains a direction and a magnitude. So if I have a vector between the model and its qrcode, I know what the distance between the model and the actual qrcode needs to be
